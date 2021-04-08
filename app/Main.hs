@@ -8,8 +8,6 @@ import Options.Applicative
 import Data.Semigroup ((<>))
 import qualified Data.Text as T
 import qualified Data.Text.IO as T
-import Data.List
-import Data.Maybe
 import Control.Monad
 import Lib
 
@@ -39,5 +37,7 @@ main = do
     options <- execParser opts
     content <- T.readFile $ filename options
     let top = getTop content
+
     forM_ top $ \(name, i) -> do
-        putStrLn $ show i ++ " " ++ T.unpack name
+        putStr $ show i ++ " "
+        T.putStrLn name

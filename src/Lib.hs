@@ -17,12 +17,6 @@ getKeys :: T.Text -> [Maybe T.Text]
 getKeys ws = map (gf 0 . T.words) $ T.lines ws
     where gf n l = atMay l n
 
--- incl :: (Eq k, Hashable k, Num a) => HashMap.HashMap k a -> k -> HashMap.HashMap k a
--- incl m k = HashMap.insertWith (+) k 1 m
-
--- getCountsMap :: Num a => [Maybe T.Text] -> HashMap.HashMap T.Text a
--- getCountsMap xs = foldl' incl HashMap.empty $ catMaybes xs
-
 getCountsMap :: [Maybe T.Text] -> HashMap.HashMap T.Text Int
 getCountsMap xs = HashMap.fromListWith (+) [(x, 1 :: Int) | x <- catMaybes xs]
 
