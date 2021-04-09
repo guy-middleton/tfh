@@ -37,5 +37,5 @@ main = do
     --     os <- Streams.unlines Streams.stdout
     --     Streams.connect is os
     counts <- Streams.withFileAsInput (filename options) $ do
-        Streams.lines >=> Streams.decodeUtf8 >=> Streams.fold buildMap HashMap.empty
-    print $ getCounts $ counts
+        Streams.lines >=> Streams.decodeUtf8 >=> Streams.fold buildMap' HashMap.empty
+    print $ getCounts' counts
