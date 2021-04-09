@@ -1,8 +1,12 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Lib
     ( getKeys
     , getCountsMap
     , getCounts
     , getTop
+    , cat
+    , buildMap
     ) where
 
 import Safe
@@ -10,6 +14,7 @@ import Data.List
 import Data.Maybe
 import Data.Ord
 import qualified Data.Text as T
+import Data.Text.Encoding         as T
 -- import qualified Data.Text.ICU as ICU
 import qualified Data.HashMap.Strict as HashMap
 
@@ -25,3 +30,17 @@ getCounts xs = take 10 $ sortOn (Down . snd) $ HashMap.toList xs
 
 getTop :: T.Text -> [(T.Text, Int)]
 getTop ws = getCounts $ getCountsMap $ getKeys ws
+
+getKeyFromLine :: T.Text -> Maybe T.Text
+getKeyFromLine l = gf 0 . T.words $ l
+    where gf n l = atMay l n
+
+cat :: T.Text -> T.Text -> T.Text
+cat l r = case getKeyFromLine r of
+    Nothing -> l
+    (Just s) -> T.append l $ T.append " " s
+
+buildMap :: HashMap.HashMap T.Text Int -> T.Text -> HashMap.HashMap T.Text Int
+buildMap m t = case getKeyFromLine t of
+    Nothing -> m
+    (Just k) -> HashMap.insertWith (+) k 1 m

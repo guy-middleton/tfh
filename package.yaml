@@ -41,7 +41,7 @@ library:
   source-dirs: src
 
 executables:
-  tfh-exe:
+  tfh:
     main:                Main.hs
     source-dirs:         app
     ghc-options:
@@ -51,6 +51,18 @@ executables:
     - -eventlog
     dependencies:
     - tfh
+
+  tfhs:
+    main:                Main.hs
+    source-dirs:         app-io-stream
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -eventlog
+    dependencies:
+    - tfh
+    - io-streams
 
 tests:
   tfh-test:
