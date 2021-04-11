@@ -14,6 +14,13 @@ import qualified System.IO.Streams as Streams
 import           Lib
 import System.IO
 import qualified Data.HashMap.Strict as HashMap
+import Streaming
+import Streaming.Prelude (yield, next, each, for, with, subst)
+import qualified Streaming.Prelude as S
+import qualified Streaming.ByteString.Char8 as Q
+import Control.Monad.Trans.Resource (runResourceT)
+import qualified Data.ByteString.Char8 as B
+
 
 data Sample = Sample
     { filename :: String }
@@ -32,10 +39,15 @@ main = do
           <> progDesc "Read stuff from a file"
           <> header "tfh - read stats from web server logs"
     options <- execParser opts
-    -- withFile (filename options) ReadMode $ \h -> do
-    --     is <- Streams.handleToInputStream h >>= Streams.lines
-    --     os <- Streams.unlines Streams.stdout
-    --     Streams.connect is os
-    counts <- Streams.withFileAsInput (filename options) $ do
-        Streams.lines >=> Streams.decodeUtf8 >=> Streams.fold buildMap' HashMap.empty
-    print $ getCounts' counts
+
+    out <- withFile (filename options) ReadMode $ \h -> do
+        -- Q.stdout
+        -- $ Q.unlines
+        -- $ subst Q.chunk
+        S.fold_ buildMap'' HashMap.empty id
+        $ mapped Q.toStrict
+        $ Q.lines        -- Stream (ByteString m) m () -- divided into Stream layers
+        $ Q.fromHandle h -- ByteString m ()            -- raw bytes
+
+    print $ getCounts'' out
+    -- print $ getCounts' counts

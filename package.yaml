@@ -33,9 +33,13 @@ dependencies:
 - safe ^>= 0.3.19
 - sort ^>= 1.0.0.0
 - deepseq ^>= 1.4.4.0
+- streaming
+- streaming-bytestring
+- resourcet ^>= 1.2.4.2
 
 ghc-options:
 - -O2
+- -funbox-strict-fields
 
 library:
   source-dirs: src
