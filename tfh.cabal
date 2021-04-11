@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 75ca51f23a3f41d5e90eff0a75946a66b66505b5b2688b37062f2112d73da739
+-- hash: d70d6e492be73d44ba678defb30427b5776e246658977252b68454e142ba84f9
 
 name:           tfh
 version:        0.1.0.0
@@ -36,42 +36,13 @@ library
   build-depends:
       base >=4.7 && <5
     , bytestring >=0.10.12 && <0.11
-    , containers >=0.6.2.1 && <0.7
-    , deepseq >=1.4.4.0 && <1.5
     , hashable >=1.3.0.0 && <1.4
     , optparse-applicative >=0.15.1.0 && <0.16
     , resourcet >=1.2.4.2 && <1.3
     , safe >=0.3.19 && <0.4
     , sort >=1.0.0.0 && <1.1
-    , streaming
-    , streaming-bytestring
-    , text >=1.2.4.1 && <1.3
-    , text-icu ==0.55.1.0
-    , unordered-containers >=0.2.13.0 && <0.3
-  default-language: Haskell2010
-
-executable tfh
-  main-is: Main.hs
-  other-modules:
-      Paths_tfh
-  hs-source-dirs:
-      app
-  ghc-options: -O2 -funbox-strict-fields -threaded -rtsopts -with-rtsopts=-N -eventlog
-  build-depends:
-      base >=4.7 && <5
-    , bytestring >=0.10.12 && <0.11
-    , containers >=0.6.2.1 && <0.7
-    , deepseq >=1.4.4.0 && <1.5
-    , hashable >=1.3.0.0 && <1.4
-    , optparse-applicative >=0.15.1.0 && <0.16
-    , resourcet >=1.2.4.2 && <1.3
-    , safe >=0.3.19 && <0.4
-    , sort >=1.0.0.0 && <1.1
-    , streaming
-    , streaming-bytestring
-    , text >=1.2.4.1 && <1.3
-    , text-icu ==0.55.1.0
-    , tfh
+    , streaming >=0.2.3.0 && <0.3
+    , streaming-bytestring >=0.2.0 && <0.3
     , unordered-containers >=0.2.13.0 && <0.3
   default-language: Haskell2010
 
@@ -85,18 +56,14 @@ executable tfhs
   build-depends:
       base >=4.7 && <5
     , bytestring >=0.10.12 && <0.11
-    , containers >=0.6.2.1 && <0.7
-    , deepseq >=1.4.4.0 && <1.5
     , hashable >=1.3.0.0 && <1.4
     , io-streams
     , optparse-applicative >=0.15.1.0 && <0.16
     , resourcet >=1.2.4.2 && <1.3
     , safe >=0.3.19 && <0.4
     , sort >=1.0.0.0 && <1.1
-    , streaming
-    , streaming-bytestring
-    , text >=1.2.4.1 && <1.3
-    , text-icu ==0.55.1.0
+    , streaming >=0.2.3.0 && <0.3
+    , streaming-bytestring >=0.2.0 && <0.3
     , tfh
     , unordered-containers >=0.2.13.0 && <0.3
   default-language: Haskell2010
@@ -112,17 +79,13 @@ test-suite tfh-test
   build-depends:
       base >=4.7 && <5
     , bytestring >=0.10.12 && <0.11
-    , containers >=0.6.2.1 && <0.7
-    , deepseq >=1.4.4.0 && <1.5
     , hashable >=1.3.0.0 && <1.4
     , optparse-applicative >=0.15.1.0 && <0.16
     , resourcet >=1.2.4.2 && <1.3
     , safe >=0.3.19 && <0.4
     , sort >=1.0.0.0 && <1.1
-    , streaming
-    , streaming-bytestring
-    , text >=1.2.4.1 && <1.3
-    , text-icu ==0.55.1.0
+    , streaming >=0.2.3.0 && <0.3
+    , streaming-bytestring >=0.2.0 && <0.3
     , tfh
     , unordered-containers >=0.2.13.0 && <0.3
   default-language: Haskell2010
