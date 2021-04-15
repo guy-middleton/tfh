@@ -33,7 +33,7 @@ getKeyFromLine' :: B.ByteString  -> Maybe BKey
 getKeyFromLine' l = gf 0 l
     where gf n l = Just $ BKey $ B.copy $ B.takeWhile (not . isSpace) l
 
-buildMap :: HashMap.HashMap BKey Int -> B.ByteString  -> HashMap.HashMap BKey Int
-buildMap m t = case getKeyFromLine t of
+buildMap :: Int -> HashMap.HashMap BKey Int -> B.ByteString  -> HashMap.HashMap BKey Int
+buildMap _ m t = case getKeyFromLine t of
     Nothing -> m
     (Just k) -> HashMap.insertWith (+) k 1 m
