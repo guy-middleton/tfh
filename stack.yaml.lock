@@ -3,18 +3,7 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/lock_files
 
-packages:
-- completed:
-    name: text-icu
-    version: 0.55.1.0
-    git: https://github.com/WorldSEnder/text-icu.git
-    pantry-tree:
-      size: 2466
-      sha256: ba49a27067608ac7e469fd137051a95c425e97a9530b69ce140f8cfa9fa1096f
-    commit: 7657227a7ca8ad13be86db5c190b806774a5fd6b
-  original:
-    git: https://github.com/WorldSEnder/text-icu.git
-    commit: 7657227a7ca8ad13be86db5c190b806774a5fd6b
+packages: []
 snapshots:
 - completed:
     size: 565720

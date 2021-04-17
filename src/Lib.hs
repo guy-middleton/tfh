@@ -1,15 +1,13 @@
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
 
 module Lib
     ( getCounts
     , buildMap
-    , BKey (..)
+    , BKey
     ) where
 
 import           Safe
 import           Data.List
-import           Data.Maybe
 import           Data.Ord
 import           Data.Char
 import qualified Data.HashMap.Strict as HashMap
@@ -18,22 +16,20 @@ import           GHC.Generics (Generic)
 import           Data.Hashable
 
 data BKey = BKey { bkey :: !B.ByteString }
-    deriving (Show, Eq, Generic)
+    deriving (Eq, Generic)
 
 instance Hashable BKey
+instance Show BKey where
+    show = B.unpack . bkey
 
-getCounts :: HashMap.HashMap BKey Int -> [(BKey, Int)]
-getCounts xs = take 10 $ sortOn (Down . snd) $ HashMap.toList xs
+getCounts :: HashMap.HashMap BKey Int -> Int -> [(BKey, Int)]
+getCounts xs n = take n $ sortOn (Down . snd) $ HashMap.toList xs
 
-getKeyFromLine :: B.ByteString  -> Maybe BKey
-getKeyFromLine l = gf 0 . B.words $ l
+getKeyFromLine :: Int -> B.ByteString  -> Maybe BKey
+getKeyFromLine n l = gf n . B.words $ l
     where gf n l = BKey <$> B.copy <$> atMay l n
 
-getKeyFromLine' :: B.ByteString  -> Maybe BKey
-getKeyFromLine' l = gf 0 l
-    where gf n l = Just $ BKey $ B.copy $ B.takeWhile (not . isSpace) l
-
 buildMap :: Int -> HashMap.HashMap BKey Int -> B.ByteString  -> HashMap.HashMap BKey Int
-buildMap _ m t = case getKeyFromLine t of
+buildMap n m t = case getKeyFromLine n t of
     Nothing -> m
     (Just k) -> HashMap.insertWith (+) k 1 m

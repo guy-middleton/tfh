@@ -1,50 +1,54 @@
 {-# LANGUAGE RecordWildCards   #-}
 {-# LANGUAGE ApplicativeDo     #-}
-{-# LANGUAGE OverloadedStrings #-}
 
 module Main where
 
 import           Options.Applicative
 import           Data.Semigroup ((<>))
+import           Control.Monad
 import           System.IO
 import qualified Data.HashMap.Strict as HashMap
-import           Streaming
 import qualified Streaming.Prelude as S
 import qualified Streaming.ByteString.Char8 as Q
 import           Lib
 
-data Sample = Sample
+data CmdLine = CmdLine
     { field :: Int
+    , number :: Int
     , filename :: String }
 
-sample :: Parser Sample
-sample = do
+cmdline :: Parser CmdLine
+cmdline = do
   field <- option auto $
     long "fields"
     <> short 'f'
     <> metavar "FIELD"
     <> help "Which field to count"
+  number <- option auto $
+    long "number"
+    <> short 'n'
+    <> metavar "Number"
+    <> value 10
+    <> help "Output line count"
   filename <- strArgument $
     metavar "FILENAME"
     <> help "input file name"
-  pure Sample {..}
+  pure CmdLine {..}
 
 main :: IO ()
 main = do
-    let opts = info (sample <**> helper) $
+    let opts = info (cmdline <**> helper) $
           fullDesc
           <> progDesc "Read stuff from a file"
           <> header "tfh - read stats from web server logs"
     options <- execParser opts
-    out <- count (filename options) (field options)
-    print $ getCounts out
+    countsMap <- makeMap (filename options) (field options - 1)
+    forM_ (getCounts countsMap $ number options) $ \(k, v) -> do
+        putStrLn $ show v ++ " " ++ show k
 
-nnn :: Int
-nnn = 0
-
-count :: FilePath -> Int -> IO (HashMap.HashMap BKey Int)
-count filename n = withFile filename ReadMode $ \h -> do
+makeMap :: FilePath -> Int -> IO (HashMap.HashMap BKey Int)
+makeMap filename n = withFile filename ReadMode $ \h -> do
     S.fold_ (buildMap n) HashMap.empty id
-    $ mapped Q.toStrict
+    $ S.mapped Q.toStrict
     $ Q.lines
     $ Q.fromHandle h
