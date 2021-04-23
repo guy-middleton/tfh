@@ -7,7 +7,7 @@ import           Options.Applicative
 import           Data.Semigroup ((<>))
 import           Control.Monad
 import           System.IO
-import qualified Data.HashMap.Strict as HashMap
+import qualified Data.HashMap.Strict as H
 import qualified Streaming.Prelude as S
 import qualified Streaming.ByteString.Char8 as Q
 import           Lib
@@ -46,9 +46,9 @@ main = do
     forM_ (getCounts countsMap $ number options) $ \(k, v) -> do
         putStrLn $ show v ++ " " ++ show k
 
-makeMap :: FilePath -> Int -> IO (HashMap.HashMap BKey Int)
+makeMap :: FilePath -> Int -> IO (H.HashMap BKey Int)
 makeMap filename n = withFile filename ReadMode $ \h -> do
-    S.fold_ (buildMap n) HashMap.empty id
+    S.fold_ (buildMap n) H.empty id
     $ S.mapped Q.toStrict
     $ Q.lines
     $ Q.fromHandle h
