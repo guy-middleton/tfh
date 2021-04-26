@@ -1,21 +1,21 @@
-{-# LANGUAGE RecordWildCards   #-}
-{-# LANGUAGE ApplicativeDo     #-}
+{-# LANGUAGE ApplicativeDo   #-}
+{-# LANGUAGE RecordWildCards #-}
 
 module Main where
 
-import           Options.Applicative
-import           Data.Semigroup ((<>))
 import           Control.Monad
-import           System.IO
-import qualified Data.HashMap.Strict as H
-import qualified Streaming.Prelude as S
-import qualified Streaming.ByteString.Char8 as Q
+import qualified Data.HashMap.Strict        as H
+import           Data.Semigroup             ((<>))
 import           Lib
+import           Options.Applicative
+import qualified Streaming.ByteString.Char8 as Q
+import qualified Streaming.Prelude          as S
+import           System.IO
 
-data CmdLine = CmdLine
-    { field :: Int
-    , number :: Int
-    , filename :: String }
+data CmdLine = CmdLine { field    :: Int
+                       , number   :: Int
+                       , filename :: String
+                       }
 
 cmdline :: Parser CmdLine
 cmdline = do

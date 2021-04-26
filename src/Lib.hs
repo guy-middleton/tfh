@@ -6,18 +6,18 @@ module Lib
     , BKey
     ) where
 
-import           Safe
+import qualified Data.ByteString.Char8 as B
+import qualified Data.ByteString.Short as B (ShortByteString, fromShort, toShort)
+import           Data.Char
+import qualified Data.HashMap.Strict   as H
+import           Data.Hashable
 import           Data.List
 import           Data.Ord
-import           Data.Char
-import qualified Data.HashMap.Strict as H
-import qualified Data.ByteString.Char8 as B
-import qualified Data.ByteString.Short as B (ShortByteString, toShort, fromShort)
-import           GHC.Generics (Generic)
-import           Data.Hashable
+import           GHC.Generics          (Generic)
+import           Safe
 
 newtype BKey = BKey { bkey :: B.ShortByteString }
-    deriving (Eq, Generic)
+  deriving (Eq, Generic)
 
 instance Hashable BKey
 instance Show BKey where
@@ -32,5 +32,5 @@ getKeyFromLine n l = gf n . B.words $ l
 
 buildMap :: Int -> H.HashMap BKey Int -> B.ByteString  -> H.HashMap BKey Int
 buildMap n m t = case getKeyFromLine n t of
-    Nothing -> m
+    Nothing  -> m
     (Just k) -> H.insertWith (+) k 1 m
