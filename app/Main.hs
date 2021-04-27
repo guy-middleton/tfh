@@ -1,7 +1,8 @@
 {-# LANGUAGE ApplicativeDo   #-}
 {-# LANGUAGE RecordWildCards #-}
 
-module Main where
+module Main
+    where
 
 import           Control.Monad
 import qualified Data.HashMap.Strict        as H
