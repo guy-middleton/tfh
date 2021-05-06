@@ -8,13 +8,13 @@ module Lib
 
 import qualified Data.ByteString.Char8 as B
 import qualified Data.ByteString.Short as B (ShortByteString, fromShort, toShort)
-import           Data.Char
+import           Data.Char             ()
 import qualified Data.HashMap.Strict   as H
-import           Data.Hashable
-import           Data.List
-import           Data.Ord
+import           Data.Hashable         (Hashable)
+import           Data.List             (sortOn)
+import           Data.Ord              (Down (Down))
 import           GHC.Generics          (Generic)
-import           Safe
+import           Safe                  (atMay)
 
 newtype BKey = BKey { bkey :: B.ShortByteString }
   deriving (Eq, Generic)
@@ -28,7 +28,7 @@ getCounts xs n = take n $ sortOn (Down . snd) $ H.toList xs
 
 getKeyFromLine :: Int -> B.ByteString  -> Maybe BKey
 getKeyFromLine n l = gf n . B.words $ l
-    where gf n l = BKey <$> B.toShort <$> atMay l n
+    where gf n l = BKey . B.toShort <$> atMay l n
 
 buildMap :: Int -> H.HashMap BKey Int -> B.ByteString  -> H.HashMap BKey Int
 buildMap n m t = case getKeyFromLine n t of
